@@ -29,3 +29,11 @@ body {
 .cart-item button {
   margin-left: 10px;
 }
+
+.remove-btn{
+ background-color: "#ff4d4d";
+ color : "white";
+ border : "none";
+padding : "5px 10px";
+border-radius: "5px";
+}
