@@ -16,8 +16,7 @@ function updateTotalPrice(amount) {
 
 // Function to remove an item
 function removeItem(event) {
-    const item = event.target.closest('li');
-
+  const item = event.target.closest('li');  
     // Find index of the item in the cartList
     const index = Array.from(cart.children).indexOf(item);
 
