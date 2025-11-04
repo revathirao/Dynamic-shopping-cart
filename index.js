@@ -50,6 +50,7 @@ function addProducts() {
         alert("Enter the Quantity")
         return
     }
+
     // create textcontent for product name and price
     let price = parseFloat(userInputProducPrice)
     let quantity = parseFloat(userInputQuantity)
@@ -93,8 +94,15 @@ function displayCart() {
     }
     else {
         for (let i = 0; i < cartList.length; i++) {
+            
             let li = document.createElement("li")
-            li.textContent = `${cartList[i].userInputProductNme} - $${cartList[i].price.toFixed(2)}- Qty: ${cartList[i].quantity}`;
+            li.textContent = `${cartList[i].userInputProductNme} - $${cartList[i].price.toFixed(2)} - Qty: ${cartList[i].quantity}`;
+
+            // Add the calculated price from the data attribute to the item’s text
+            const itemPrice = calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
+            li.textContent += ` - Item Total: $${itemPrice}`; // Append item price info
+
+li.dataset.price = itemPrice; // Store price in the data attribute for later use
 
             li.appendChild(CreateRemoveButton());
 
