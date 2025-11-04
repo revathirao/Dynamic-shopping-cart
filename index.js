@@ -20,58 +20,59 @@ function updateTotalPrice(amount) {
 // Function to remove an item
 function removeItem(event) {
     const item = event.target.closest('li');
-    const price = parseFloat(item.dataset.price)|| 0;
+    const price = parseFloat(item.dataset.price) || 0;
     updateTotalPrice(-price);
     item.remove();
 }
 
-    function addProducts() {
-       let userInputProductNme = productNameInput.value.trim();
-        let userInputProducPrice = productPriceInput.value.trim();
-        let userInputQuantity = productQuantity.value.trim()
+function addProducts() {
+    let userInputProductNme = productNameInput.value.trim();
+    let userInputProducPrice = productPriceInput.value.trim();
+    let userInputQuantity = productQuantity.value.trim()
 
-        if (userInputProductNme === "") {
-            alert("Enter the product name")
-            return;
-        } else if (userInputProducPrice === "") {
-            alert("Enter the product price")
-            return
-        } else if (userInputQuantity === "") {
-            alert("Enter the Quantity")
-            return
-        }
-        // create textcontent for product name and price
-       let price = parseFloat(userInputProducPrice)
-       let  quantity = parseFloat(userInputQuantity)
-
-        if (isNaN(price) || price < 0) {
-            alert("Enter a valid positive number for price");
-            return;
-        }
-        else if (isNaN(quantity) || quantity < 1) {
-            alert("Enter a valid quantity (at least 1)");
-            return;
-        }
-
-        else if (Math.round(price * 100) !== price * 100) {
-            alert("Price can have at most 2 decimal places");
-            return;
-        }
-        cartList.push({ userInputProductNme, price, quantity })
-        displayCart();
-        updateTotalPrice(price * quantity)
-        // //create li
-        // let li = document.createElement("li")
-        // li.textContent = `${userInputProductNme} - $${price.toFixed(2)}- Qty: ${quantity}`;
-
-        // //append the li to ul_Shoppinglist
-        // cart.appendChild(li)
-
-        // Clear inputs
-        productNameInput.value = "";
-        productPriceInput.value = "";
-        productQuantity.value = "";
+    if (userInputProductNme === "") {
+        alert("Enter the product name")
+        return;
+    } else if (userInputProducPrice === "") {
+        alert("Enter the product price")
+        return
+    } else if (userInputQuantity === "") {
+        alert("Enter the Quantity")
+        return
     }
+    // create textcontent for product name and price
+    let price = parseFloat(userInputProducPrice)
+    let quantity = parseFloat(userInputQuantity)
+
+    if (isNaN(price) || price < 0) {
+        alert("Enter a valid positive number for price");
+        return;
+    }
+    else if (isNaN(quantity) || quantity < 1) {
+        alert("Enter a valid quantity (at least 1)");
+        return;
+    }
+
+    else if (Math.round(price * 100) !== price * 100) {
+        alert("Price can have at most 2 decimal places");
+        return;
+    }
+    cartList.push({ userInputProductNme, price, quantity })
+    displayCart();
+    updateTotalPrice(price * quantity)
+    
+    // //create li
+    // let li = document.createElement("li")
+    // li.textContent = `${userInputProductNme} - $${price.toFixed(2)}- Qty: ${quantity}`;
+
+    // //append the li to ul_Shoppinglist
+    // cart.appendChild(li)
+
+    // Clear inputs
+    productNameInput.value = "";
+    productPriceInput.value = "";
+    productQuantity.value = "";
+}
 
 
 function displayCart() {
@@ -82,36 +83,83 @@ function displayCart() {
 
         const li = document.createElement('li');
         li.textContent = "Shopping cart is empty";
-        fragment.appendChild(li);    } 
+        fragment.appendChild(li);
+    }
     else {
         for (let i = 0; i < cartList.length; i++) {
             let li = document.createElement("li")
             li.textContent = `${cartList[i].userInputProductNme} - $${cartList[i].price.toFixed(2)}- Qty: ${cartList[i].quantity}`;
-             li.appendChild(CreateRemoveButton());
-            li.dataset.price = (cartList[i].price * cartList[i].quantity).toFixed(2);
+            
+            li.appendChild(CreateRemoveButton());
+            
+            li.dataset.price =  calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
+        
 
+       li.appendChild(createupDateButton(i))
             fragment.appendChild(li)
         }
-       
+
     }
-     cart.appendChild(fragment)
+    cart.appendChild(fragment)
+}
+    function calculatePrice(price,qty){ return price*qty}
+
+
+
+function CreateRemoveButton() {
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove"
+    removeBtn.style.marginLeft = "10px"; // small spacing
+    removeBtn.classList.add("remove-btn"); // optional for CSS
+
+    //   removeBtn.style.backgroundColor = "#ff4d4d";
+    //   removeBtn.style.color = "white";
+    //   removeBtn.style.border = "none";
+    //   removeBtn.style.padding = "5px 10px";
+    //   removeBtn.style.borderRadius = "5px";
+
+    removeBtn.addEventListener("click", removeItem)
+    return removeBtn;
+
 }
 
-function CreateRemoveButton(){
-  const removeBtn = document.createElement("button");
-  removeBtn.textContent = "Remove"
-   removeBtn.style.marginLeft = "10px"; // small spacing
-     removeBtn.classList.add("remove-btn"); // optional for CSS
+function createupDateButton(index) {
+    let upDateBtn = document.createElement("button");
+    upDateBtn.textContent = "Update"
+    upDateBtn.style.marginLeft = "10px"; // small spacing
+    upDateBtn.classList.add("update-btn"); // optional for CSS
+    upDateBtn.style.backgroundColor = "green";
+    upDateBtn.style.color = "white";
+    upDateBtn.style.padding = "5px";
+    upDateBtn.style.marginLeft = "10px";
+    // upDateBtn.addEventListener("click", productQuantity)
+    //     updateBtn.addEventListener("click", () => updateItem(i));
+    // Add event listener here
+  upDateBtn.addEventListener("click", function() {
+    updateItem(index);
+  });
 
-//   removeBtn.style.backgroundColor = "#ff4d4d";
-//   removeBtn.style.color = "white";
-//   removeBtn.style.border = "none";
-//   removeBtn.style.padding = "5px 10px";
-//   removeBtn.style.borderRadius = "5px";
-
-removeBtn.addEventListener("click",removeItem)
-  return removeBtn;
-
+    return upDateBtn;
 }
+
+function updateItem(index) {
+    let newQuantity = prompt("Enter new quantity:", cartList[index].quantity);
+    if (newQuantity === null) return;
+    newQuantity = parseInt(newQuantity);
+
+    if (isNaN(newQuantity) || newQuantity < 1) {
+        alert("Enter a valid quantity (at least 1)");
+        return;
+    }
+
+    cartList[index].quantity = newQuantity;
+
+     // Recalculate total
+  totalPrice = cartList.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  totalPriceSpan.textContent = totalPrice.toFixed(2);
+    displayCart();
+    // updateTotalPrice();
+}
+
 
 addProductButton.addEventListener("click", addProducts);
