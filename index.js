@@ -7,9 +7,6 @@ const totalPriceSpan = document.getElementById('total-price');
 
 let cartList = [];
 let totalPrice = 0;
-// let userInputProductNme;
-// let price;
-// let quantity
 
 // Function to update the total price
 function updateTotalPrice(amount) {
@@ -20,10 +17,24 @@ function updateTotalPrice(amount) {
 // Function to remove an item
 function removeItem(event) {
     const item = event.target.closest('li');
-    const price = parseFloat(item.dataset.price) || 0;
-    updateTotalPrice(-price);
+
+    // Find index of the item in the cartList
+    const index = Array.from(cart.children).indexOf(item);
+
+    if (index > -1) {
+        // Subtract that item's total from the totalPrice
+        const itemTotal = cartList[index].price * cartList[index].quantity;
+        totalPrice -= itemTotal;
+        totalPriceSpan.textContent = totalPrice.toFixed(2);
+
+        // Remove from cartList array
+        cartList.splice(index, 1);
+    }
+
+    // Remove from DOM
     item.remove();
 }
+
 
 function addProducts() {
     let userInputProductNme = productNameInput.value.trim();
@@ -57,22 +68,18 @@ function addProducts() {
         alert("Price can have at most 2 decimal places");
         return;
     }
+
     cartList.push({ userInputProductNme, price, quantity })
     displayCart();
     updateTotalPrice(price * quantity)
-    
-    // //create li
-    // let li = document.createElement("li")
-    // li.textContent = `${userInputProductNme} - $${price.toFixed(2)}- Qty: ${quantity}`;
-
-    // //append the li to ul_Shoppinglist
-    // cart.appendChild(li)
 
     // Clear inputs
     productNameInput.value = "";
     productPriceInput.value = "";
     productQuantity.value = "";
 }
+
+addProductButton.addEventListener("click", addProducts);
 
 
 function displayCart() {
@@ -89,36 +96,28 @@ function displayCart() {
         for (let i = 0; i < cartList.length; i++) {
             let li = document.createElement("li")
             li.textContent = `${cartList[i].userInputProductNme} - $${cartList[i].price.toFixed(2)}- Qty: ${cartList[i].quantity}`;
-            
-            li.appendChild(CreateRemoveButton());
-            
-            li.dataset.price =  calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
-        
 
-       li.appendChild(createupDateButton(i))
+            li.appendChild(CreateRemoveButton());
+
+            li.dataset.price = calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
+
+
+            li.appendChild(createupDateButton(i))
             fragment.appendChild(li)
         }
 
     }
     cart.appendChild(fragment)
 }
-    function calculatePrice(price,qty){ return price*qty}
 
-
+function calculatePrice(price, qty) { return price * qty }
 
 function CreateRemoveButton() {
     const removeBtn = document.createElement("button");
     removeBtn.textContent = "Remove"
     removeBtn.style.marginLeft = "10px"; // small spacing
     removeBtn.classList.add("remove-btn"); // optional for CSS
-
-    //   removeBtn.style.backgroundColor = "#ff4d4d";
-    //   removeBtn.style.color = "white";
-    //   removeBtn.style.border = "none";
-    //   removeBtn.style.padding = "5px 10px";
-    //   removeBtn.style.borderRadius = "5px";
-
-    removeBtn.addEventListener("click", removeItem)
+    removeBtn.addEventListener("click", removeItem);
     return removeBtn;
 
 }
@@ -128,16 +127,9 @@ function createupDateButton(index) {
     upDateBtn.textContent = "Update"
     upDateBtn.style.marginLeft = "10px"; // small spacing
     upDateBtn.classList.add("update-btn"); // optional for CSS
-    upDateBtn.style.backgroundColor = "green";
-    upDateBtn.style.color = "white";
-    upDateBtn.style.padding = "5px";
-    upDateBtn.style.marginLeft = "10px";
-    // upDateBtn.addEventListener("click", productQuantity)
-    //     updateBtn.addEventListener("click", () => updateItem(i));
-    // Add event listener here
-  upDateBtn.addEventListener("click", function() {
-    updateItem(index);
-  });
+    upDateBtn.addEventListener("click", function () {
+        updateItem(index);
+    });
 
     return upDateBtn;
 }
@@ -154,12 +146,11 @@ function updateItem(index) {
 
     cartList[index].quantity = newQuantity;
 
-     // Recalculate total
-  totalPrice = cartList.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  totalPriceSpan.textContent = totalPrice.toFixed(2);
+    // Recalculate total
+    totalPrice = cartList.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    totalPriceSpan.textContent = totalPrice.toFixed(2);
     displayCart();
-    // updateTotalPrice();
+
 }
 
 
-addProductButton.addEventListener("click", addProducts);

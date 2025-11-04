@@ -1,44 +1,103 @@
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
-  line-height: 1.6;
-}
+  height: 100vh;  /* Full viewport height */
+  display: flex;
+  justify-content: center;   /* Centers horizontally */
+  align-items: center;  /* Centers vertically */
  
+}
+
+.shopping-container {
+  background-color: #463724;
+  border: solid black;
+  border-radius: 8px;
+  background-color: antiquewhite;
+  max-width: 650px;
+   border-width: 2px;
+  text-align: center;
+  justify-content: center;
+  padding: 30px;
+ }
+
 #product-container {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
+  border-radius: 5px
 }
- 
+
+h2 {
+  margin-bottom: 10px;
+}
+
+#add-product{
+  background-color: green;
+ color: white;
+ border-radius: 5px
+}
+
 #cart {
   list-style: none;
   padding: 0;
 }
- 
+
 .cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 5px; 
+  
 }
- 
+
 .cart-item span {
   flex: 1;
 }
- 
+
 .cart-item button {
   margin-left: 10px;
 }
 
-.remove-btn{
- background-color: "#ff4d4d";
- color : "white";
- border : "none";
-padding : "5px 10px";
-border-radius: "5px";
+.remove-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+   padding: 6px 12px;  /* Slightly increased padding */
+  font-weight: bold;  /* Makes text more visible */
 }
 
-l{
+.update-btn {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+/* Optional: add a hover effect for better user experience */
+.remove-btn:hover {
+  background-color: darkred;  /*  Hover feedback */
+}
+
+.update-btn:hover {
+  background-color: darkgreen;  /*  Hover feedback */
+}
+
+#add-product:hover{
+  background-color: rgb(8, 12, 8);  /*  Hover feedback */
+}
+
+li {
   display: flex;
   overflow: hidden;
+  margin-bottom: 10px;  
+}
+
+h3{
+  text-align: left;
+  margin-top: 20px;;
 }
