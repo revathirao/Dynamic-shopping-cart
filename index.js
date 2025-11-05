@@ -102,7 +102,7 @@ function displayCart() {
             const itemPrice = calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
             li.textContent += ` - Item Total: $${itemPrice}`; // Append item price info
 
-li.dataset.price = itemPrice; // Store price in the data attribute for later use
+            li.dataset.price = itemPrice; // Store price in the data attribute for later use
 
             li.appendChild(CreateRemoveButton());
 
