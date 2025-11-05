@@ -106,7 +106,7 @@ function displayCart() {
 
             li.appendChild(CreateRemoveButton());
 
-            li.dataset.price = calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
+            // li.dataset.price = calculatePrice(cartList[i].price, cartList[i].quantity).toFixed(2);
 
 
             li.appendChild(createupDateButton(i))
